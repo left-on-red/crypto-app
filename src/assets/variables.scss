@@ -1,0 +1,7 @@
+$material-light: (
+  'table': (
+    'active': map-get($grey, 'lighten-4'),
+    'hover': red, // <<<<<<<<< THIS HERE <<<<<<<<<
+    'group': map-get($grey, 'lighten-4')
+  )
+);
