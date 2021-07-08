@@ -4,7 +4,7 @@
             <v-spacer />
             <router-link to="/history/settings">
             <v-btn icon>
-                <v-icon>mdi-cog</v-icon>
+                <v-icon color="dimmer">mdi-cog</v-icon>
             </v-btn>
             </router-link>
         </v-app-bar>
