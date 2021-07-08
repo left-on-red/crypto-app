@@ -30,8 +30,8 @@
 <script>
 
 import cryptocurrencies from 'cryptocurrencies';
-import Dialogs from './../models/Dialogs.js';
-import BankList from './../models/BankList.js';
+import Dialogs from '@/models/Dialogs.js';
+import BankList from '@/models/BankList.js';
 
 export default {
     name: 'AddRowDialog',
@@ -44,6 +44,11 @@ export default {
 
         bank: {
             type: BankList,
+            required: true
+        },
+
+        ids: {
+            type: Object,
             required: true
         }
     },
@@ -67,7 +72,11 @@ export default {
         updated_box() { if (this.input) { this.input = this.input.toUpperCase() } },
 
         submit() {
-            this.bank.add(this.input.toUpperCase());
+            let input = this.input.toUpperCase();
+            this.bank.add(input);
+
+            this.api(`assets?search=${input}`).then((data) => { this.ids[input] = data.data[0].id; });
+
             this.$refs.input_el.blur();
             this.dialog.add_row = false;
             this.clear();

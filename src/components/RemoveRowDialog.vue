@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="dialog.remove_row" width="400">
-        <v-card v-if="data">
+        <v-card v-if="data != null">
             <v-card-title></v-card-title>
             <v-card-text>
                 <span style="text-transform: uppercase;">Remove <span style="color: var(--v-primary-base);">{{data.symbol}}</span> from your table?
@@ -18,17 +18,13 @@
 
 <script>
 
-let Dialogs = require('./../models/Dialogs.js');
-let CryptoItem = require('./../models/CryptoItem.js');
-let CryptoList = require('./../models/CryptoList.js');
-let BankList = require('./../models/BankList.js');
+let Dialogs = require('@/models/Dialogs.js');
+let CryptoItem = require('@/models/CryptoItem.js');
+let CryptoList = require('@/models/CryptoList.js');
+let BankList = require('@/models/BankList.js');
 
 export default {
     name: 'RemoveRowDialog',
-
-    data: () => ({
-
-    }),
 
     props: {
         dialog: {
@@ -48,6 +44,11 @@ export default {
         bank: {
             type: BankList,
             required: true
+        },
+
+        ids: {
+            type: Object,
+            required: true
         }
     },
 
@@ -56,6 +57,7 @@ export default {
         confirm() {
             this.crypto.pop(this.data.symbol);
             this.bank.remove(this.data.symbol);
+            delete this.ids[this.data.symbol];
 
             this.dialog.remove_row = false;
         },
@@ -63,7 +65,7 @@ export default {
         cancel() {
             this.dialog.remove_row = false;
         }
-    },
+    }
 }
 </script>
 

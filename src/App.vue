@@ -9,8 +9,8 @@
         </v-app-bar>
         <BuyCryptoDialog :data="datas.buy()" :bank="bank" :dialog="dialogs" />
         <SellCryptoDialog :data="datas.sell()" :bank="bank" :dialog="dialogs" />
-        <AddRowDialog :dialog="dialogs" :bank="bank" />
-        <RemoveRowDialog :data="datas.remove()" :crypto="crypto" :bank="bank" :dialog="dialogs" />
+        <AddRowDialog :dialog="dialogs" :bank="bank" :ids="ids" />
+        <RemoveRowDialog :data="datas.remove()" :crypto="crypto" :bank="bank" :dialog="dialogs" :ids="ids" />
         <v-main style="margin-top: 48px;">
             <v-row>
                 <!--<v-col>
@@ -38,17 +38,19 @@
 
 <script>
 
-import BuyCryptoDialog from './components/BuyCryptoDialog.vue';
-import SellCryptoDialog from './components/SellCryptoDialog.vue';
-import AddRowDialog from './components/AddRowDialog.vue';
-import RemoveRowDialog from './components/RemoveRowDialog.vue';
+import BuyCryptoDialog from '@/components/BuyCryptoDialog.vue';
+import SellCryptoDialog from '@/components/SellCryptoDialog.vue';
+import AddRowDialog from '@/components/AddRowDialog.vue';
+import RemoveRowDialog from '@/components/RemoveRowDialog.vue';
 
-import Config from './models/Config.js';
-import Dialogs from './models/Dialogs.js';
-import Datas from './models/Datas.js';
+import Config from '@/models/Config.js';
+import Dialogs from '@/models/Dialogs.js';
+import Datas from '@/models/Datas.js';
 
-import CryptoList from './models/CryptoList.js';
-import BankList from './models/BankList.js';
+import CryptoList from '@/models/CryptoList.js';
+import BankList from '@/models/BankList.js';
+
+//import cryptocurrencies from 'cryptocurrencies';
 
 export default {
     name: 'App',
@@ -69,6 +71,8 @@ export default {
         crypto: new CryptoList(),
 
         bank: new BankList(localStorage.getItem('bank')),
+
+        ids: localStorage.getItem('ids') ? JSON.parse(localStorage.getItem('ids')) : {},
         
         initialized: false
     }),
@@ -78,24 +82,39 @@ export default {
 
     methods: {
         refresh() {
-            if (this.bank.data().length > 0) {
-                let symbols = [];
-                for (let b = 0; b < this.bank.data().length; b++) { symbols.push(this.bank.data()[b].symbol) }
+            if (this.bank.data().length > 0 && !this.initialized) {
+                let ids = [];
+                for (let b = 0; b < this.bank.data().length; b++) { ids.push(this.ids[this.bank.data()[b].symbol]) }
 
-                this.api(`currencies/ticker?ids=${symbols.join(',')}&convert=USD`).then(data => {
+                this.api(`assets?ids=${ids.join(',')}`).then((data) => {
+                    data = data.data;
+
                     if (!this.initialized) {
                         for (let d = 0; d < data.length; d++) {
                             this.crypto.push({
                                 name: data[d].name,
                                 symbol: data[d].symbol,
-                                svg: data[d].logo_url,
-
-                                price: data[d].price
-                            });
+                                price: data[d].priceUsd
+                            })
                         }
-
-                        this.initialized = true;
                     }
+
+                    else {
+                        for (let d = 0; d < data.length; d++) {
+                            if (!this.crypto.update(data[d].symbol, data[d].price)) {
+                                this.crypto.push({
+                                    name: data[d].name,
+                                    symbol: data[d].symbol,
+                                    price: data[d].priceUsd
+                                });
+                            }
+                        }
+                    }
+                });
+
+                this.initialized = true;
+
+                /*this.api(`currencies/ticker?ids=${symbols.join(',')}&convert=USD`).then(data => {
 
                     else {
                         for (let d = 0; d < data.length; d++) {
@@ -109,10 +128,8 @@ export default {
                             }
                         }
                     }
-                });
+                });*/
             }
-
-            else { this.initialized = true }
 
             /*let date = new Date();
             date.setMonth(date.getMonth() - 1);
@@ -148,6 +165,8 @@ export default {
 
     mounted() {
         this.$vuetify.theme.dark = this.config.dark;
+
+        setInterval(() => { localStorage.setItem('ids', JSON.stringify(this.ids)) }, 100)
 
         let loop = () => { setTimeout(() => { this.refresh(); loop(); }, 5000) }
 

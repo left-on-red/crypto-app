@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import CryptoTable from './../components/CryptoTable.vue';
+import CryptoTable from '@/components/CryptoTable.vue';
 
-import Config from './../models/Config.js';
-import Dialogs from './../models/Dialogs.js';
-import Datas from './../models/Datas.js';
+import Config from '@/models/Config.js';
+import Dialogs from '@/models/Dialogs.js';
+import Datas from '@/models/Datas.js';
 
-import CryptoList from './../models/CryptoList.js';
-import BankList from './../models/BankList.js';
+import CryptoList from '@/models/CryptoList.js';
+import BankList from '@/models/BankList.js';
 
 export default {
     name: 'Home',
@@ -61,7 +61,6 @@ export default {
 
     methods: {
         buy_crypto(symbol) {
-            console.log(this.crypto.get(symbol));
             this.datas.buy(JSON.parse(this.crypto.get(symbol).json()));
             this.dialogs.buy_crypto = true;
         },
@@ -80,7 +79,7 @@ export default {
         },
 
         remove_row(symbol) {
-            this.datas.remove(JSON.parse(this.crypto.get(symbol).json()));
+            this.datas.remove(this.crypto.get(symbol).duplicate());
             this.dialogs.remove_row = true;
         }
     }

@@ -40,10 +40,10 @@
 
 <script>
 
-import CryptoRow from './CryptoRow.vue';
+import CryptoRow from '@/components/CryptoRow.vue';
 
-import CryptoList from './../models/CryptoList.js';
-import BankList from './../models/BankList.js';
+import CryptoList from '@/models/CryptoList.js';
+import BankList from '@/models/BankList.js';
 
 export default {
     name: 'CryptoTable',

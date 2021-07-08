@@ -1,6 +1,6 @@
 <template>
     <tr v-if="data">
-        <td :style="`width: 20px;${padding}`"><p><img width="20" height="20" :src="data.svg" /></p></td>
+        <td :style="`width: 20px;${padding}`"><p style="margin-left: 20px;"><img width="20" height="20" :src="`https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/svg/${$vuetify.theme.dark ? 'white' : 'black'}/${symbol.toLowerCase()}.svg`" /></p></td>
         <td :style="padding"><p>{{data.name}}</p></td>
         <td :style="padding"><p>{{symbol}}</p></td>
         <td :style="padding"><p>${{price}}</p></td>
@@ -75,8 +75,8 @@
 
 import BigDecimal from 'js-big-decimal';
 
-import CryptoList from './../models/CryptoList.js';
-import BankList from './../models/BankList.js';
+import CryptoList from '@/models/CryptoList.js';
+import BankList from '@/models/BankList.js';
 
 export default {
     name: 'CryptoRow',
@@ -185,10 +185,10 @@ export default {
     },
 
     methods: {
-        send_buy_crypto() { this.$emit('buy_crypto', this.data.symbol) },
-        send_sell_crypto() { this.$emit('sell_crypto', this.data.symbol) },
-        send_view_crypto() { this.$emit('view_crypto', this.data.symbol) },
-        send_remove_row() { this.$emit('remove_row', this.data.symbol) },
+        send_buy_crypto() { this.$emit('buy_crypto', this.symbol) },
+        send_sell_crypto() { this.$emit('sell_crypto', this.symbol) },
+        send_view_crypto() { this.$emit('view_crypto', this.symbol) },
+        send_remove_row() { this.$emit('remove_row', this.symbol) },
 
     
         abs(val) { return val.compareTo(this.decimal('0')) < 0 ? val.negate() : val },

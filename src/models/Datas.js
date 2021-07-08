@@ -29,7 +29,7 @@ module.exports = class Datas {
     }
 
     remove(data) {
-        if (this.data != undefined) { this._remove = data }
+        if (data != undefined) { this._remove = data }
         return this._remove;
     }
 }

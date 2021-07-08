@@ -39,8 +39,5 @@ npm run lint
 npm run deploy
 ```
 
-#### Environment Variables
-`VUE_APP_API_KEY=[your nomics API key here]`
-
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

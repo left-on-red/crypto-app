@@ -12,7 +12,7 @@ module.exports = class CryptoList {
     /**
      * @param {CryptoItem} obj 
      */
-    push(obj) { this.data().push(new CryptoItem(obj.name, obj.symbol, obj.svg, obj.price)) }
+    push(obj) { this.data().push(new CryptoItem(obj.name, obj.symbol, obj.price)) }
 
     /**
      * 

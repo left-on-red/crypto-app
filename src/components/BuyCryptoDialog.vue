@@ -69,9 +69,9 @@
 
 import BigDecimal from 'js-big-decimal';
 
-import Dialogs from './../models/Dialogs.js';
+import Dialogs from '@/models/Dialogs.js';
 //import CryptoItem from './../models/CryptoItem.js';
-import BankList from './../models/BankList.js';
+import BankList from '@/models/BankList.js';
 
 
 export default {

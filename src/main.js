@@ -19,15 +19,7 @@ Vue.use(vueMq, {
 
 Vue.config.productionTip = false;
 
-let key = process.env.VUE_APP_API_KEY;
-let base = 'https://api.nomics.com/v1';
-
-/**let loop = () => { setTimeout(() => { this.refresh(); loop(); }, 5000) }
-
-        if (!this.last_request || Date.now() - this.last_request >= 1100) {
-            this.refresh();
-            loop();
-        } */
+let api = 'https://api.coincap.io/v2';
 
 function sleep(ms) {
     return new Promise(function(resolve) {
@@ -41,9 +33,8 @@ Vue.mixin({
     methods: {
         async api(resource) {
             async function request() {
-                resource += resource.includes('?') ? `&key=${key}` : `?key=${key}`;
                 try {
-                    let response = await fetch(`${base}/${resource}`, {
+                    let response = await fetch(`${api}/${resource}`, {
                         method: 'GET',
                         mode: 'cors',
                         cache: 'no-cache'
