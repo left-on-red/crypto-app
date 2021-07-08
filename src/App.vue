@@ -82,9 +82,10 @@ export default {
 
     methods: {
         refresh() {
-            if (this.bank.data().length > 0 && !this.initialized) {
+            if (!this.initialized) {
                 let ids = [];
                 for (let b = 0; b < this.bank.data().length; b++) { ids.push(this.ids[this.bank.data()[b].symbol]) }
+
 
                 this.api(`assets?ids=${ids.join(',')}`).then((data) => {
                     data = data.data;

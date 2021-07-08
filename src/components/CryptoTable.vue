@@ -28,7 +28,7 @@
                     @remove_row="forward_remove_row"
                 />
 
-                <tr v-if="initialized" class="add-row">
+                <tr class="add-row">
                     <td colspan="9">
                         <v-btn icon block color="dimmer" @click="forward_add_row()"><v-icon>mdi-plus</v-icon></v-btn>
                     </td>
