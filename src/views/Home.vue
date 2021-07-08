@@ -1,14 +1,24 @@
 <template>
-    <CryptoTable
-        :crypto="crypto"
-        :bank="bank"
-        :initialized="initialized"
-        @buy_crypto="buy_crypto"
-        @sell_crypto="sell_crypto"
-        @view_crypto="view_crypto"
-        @add_row="add_row"
-        @remove_row="remove_row"
-    />
+    <v-container>
+        <v-app-bar color="background" flat dense>
+            <v-spacer />
+            <router-link to="/history/settings">
+            <v-btn icon>
+                <v-icon>mdi-cog</v-icon>
+            </v-btn>
+            </router-link>
+        </v-app-bar>
+        <CryptoTable
+            :crypto="crypto"
+            :bank="bank"
+            :initialized="initialized"
+            @buy_crypto="buy_crypto"
+            @sell_crypto="sell_crypto"
+            @view_crypto="view_crypto"
+            @add_row="add_row"
+            @remove_row="remove_row"
+        />
+    </v-container>
 </template>
 
 <script>

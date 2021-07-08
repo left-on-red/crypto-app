@@ -1,12 +1,5 @@
 <template>
     <v-app id="app">
-        <v-app-bar color="background" absolute flat dense style="margin: 10px;">
-            <router-link to="/history/settings">
-            <v-btn icon>
-                <v-icon>mdi-cog</v-icon>
-            </v-btn>
-            </router-link>
-        </v-app-bar>
         <BuyCryptoDialog :data="datas.buy()" :bank="bank" :dialog="dialogs" />
         <SellCryptoDialog :data="datas.sell()" :bank="bank" :dialog="dialogs" />
         <AddRowDialog :dialog="dialogs" :bank="bank" :ids="ids" />
