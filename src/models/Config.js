@@ -9,6 +9,7 @@ module.exports = class Config {
         this.profit_dollar_decimal = 2;
         this.profit_percent_decimal = 2;
 
+        if (typeof data == 'string') { data = JSON.parse(data) }
         if (data != undefined && data != null && typeof data == 'object') {
             let keys = Object.keys(data);
             for (let k = 0; k < keys.length; k++) {

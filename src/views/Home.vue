@@ -1,8 +1,8 @@
 <template>
-    <v-container>
+    <v-container style="padding: 0; margin-top: 20px;">
         <v-app-bar color="background" flat dense>
             <v-spacer />
-            <router-link to="/history/settings">
+            <router-link to="/settings">
             <v-btn icon>
                 <v-icon color="dimmer">mdi-cog</v-icon>
             </v-btn>

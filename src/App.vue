@@ -4,27 +4,15 @@
         <SellCryptoDialog :data="datas.sell()" :bank="bank" :dialog="dialogs" />
         <AddRowDialog :dialog="dialogs" :bank="bank" :ids="ids" />
         <RemoveRowDialog :data="datas.remove()" :crypto="crypto" :bank="bank" :dialog="dialogs" :ids="ids" />
-        <v-main style="margin-top: 48px;">
-            <v-row>
-                <!--<v-col>
-                    <v-btn icon id="theme" @click="dark = !dark" x-large style="float: right; margin: 20px;">
-                        <v-icon v-if="dark" color="#999999">mdi-brightness-7</v-icon>
-                        <v-icon v-else color="#646464">mdi-brightness-5</v-icon>
-                    </v-btn>
-                </v-col>-->
-                <v-col></v-col>
-                <v-col cols="12" sm="11" md="10">
-                    <router-view
-                        :crypto="crypto"
-                        :bank="bank"
-                        :initialized="initialized"
-                        :datas="datas"
-                        :dialogs="dialogs"
-                        :config="config"
-                    />
-                </v-col>
-                <v-col></v-col>
-            </v-row>
+        <v-main>
+            <router-view
+                :crypto="crypto"
+                :bank="bank"
+                :initialized="initialized"
+                :datas="datas"
+                :dialogs="dialogs"
+                :config="config"
+            />
         </v-main>
     </v-app>
 </template>
@@ -75,11 +63,10 @@ export default {
 
     methods: {
         refresh() {
-            if (!this.initialized) {
-                let ids = [];
-                for (let b = 0; b < this.bank.data().length; b++) { ids.push(this.ids[this.bank.data()[b].symbol]) }
+            let ids = [];
+            for (let b = 0; b < this.bank.data().length; b++) { ids.push(this.ids[this.bank.data()[b].symbol]) }
 
-
+            if (ids.length > 0) {
                 this.api(`assets?ids=${ids.join(',')}`).then((data) => {
                     data = data.data;
 
@@ -89,13 +76,15 @@ export default {
                                 name: data[d].name,
                                 symbol: data[d].symbol,
                                 price: data[d].priceUsd
-                            })
+                            });
                         }
+
+                        this.initialized = true;
                     }
 
                     else {
                         for (let d = 0; d < data.length; d++) {
-                            if (!this.crypto.update(data[d].symbol, data[d].price)) {
+                            if (!this.crypto.update(data[d].symbol, data[d].priceUsd)) {
                                 this.crypto.push({
                                     name: data[d].name,
                                     symbol: data[d].symbol,
@@ -104,25 +93,7 @@ export default {
                             }
                         }
                     }
-                });
-
-                this.initialized = true;
-
-                /*this.api(`currencies/ticker?ids=${symbols.join(',')}&convert=USD`).then(data => {
-
-                    else {
-                        for (let d = 0; d < data.length; d++) {
-                            if (!this.crypto.update(data[d].symbol, data[d].price)) {
-                                this.crypto.push({
-                                    name: data[d].name,
-                                    symbol: data[d].symbol,
-                                    svg: data[d].logo_url,
-                                    price: data[d].price
-                                });
-                            }
-                        }
-                    }
-                });*/
+                })
             }
 
             /*let date = new Date();
@@ -162,7 +133,7 @@ export default {
 
         setInterval(() => { localStorage.setItem('ids', JSON.stringify(this.ids)) }, 100)
 
-        let loop = () => { setTimeout(() => { this.refresh(); loop(); }, 5000) }
+        let loop = () => { setTimeout(() => { this.refresh(); loop(); }, 1000) }
 
         this.refresh();
         loop();
@@ -186,8 +157,8 @@ export default {
 </script>
 
 <style lang="scss">
-    p {
-        //color: var(--v-dimmer-base);
+    p, .v-label {
+        //color: var(--v-dimmer-base) !important;
         text-transform: uppercase;
         letter-spacing: 2px;
         font-size: 12px;
